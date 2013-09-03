@@ -8,7 +8,7 @@ post '/product' do
     params                     =  JSON.parse( request.body.string )
     #check_signature( params )
     product                    =  ProductController.create( params )
-    success( Constant::HTTP_CREATE_SUCCESS,customer )
+    success( Constant::HTTP_CREATE_SUCCESS, product )
   rescue ApiException => error
     failed( error.code, error.msg )
   end

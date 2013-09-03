@@ -8,7 +8,11 @@ class ProductController < ApplicationController
       verify_params product_info, "sku"
       verify_params product_info, "categories"
       verify_params product_info, "name"
-	  product          =  Product.create_product product_info
 
+	  begin
+	  	product          =  Product.create_product product_info
+	  rescue ActiveRecord::RecordNotUnique => err
+	  	raise ApiException.new( Constant::HTTP_REQUEST_ERROR, "该商品sku已存在" ) 
+	  end
 	end
 end
