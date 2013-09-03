@@ -5,9 +5,9 @@ class ProductController < ApplicationController
 	def self.create( product_info )
 	  verify_params product_info, "attribute_set_id"
       verify_params product_info, "type_id"
-      verify_params product_info, "product_type_id"
       verify_params product_info, "sku"
       verify_params product_info, "categories"
+      verify_params product_info, "name"
 	  product          =  Product.create_product product_info
 
 	end
