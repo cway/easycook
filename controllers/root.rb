@@ -6,7 +6,7 @@ require 'base64'
 post '/product' do
   begin
     params                     =  JSON.parse( request.body.string )
-    check_signature( params )
+    #check_signature( params )
     product                    =  ProductController.create( params )
     success( Constant::HTTP_CREATE_SUCCESS,customer )
   rescue ApiException => error

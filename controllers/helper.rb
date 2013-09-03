@@ -67,6 +67,12 @@ helpers do
     unless params["signature"].eql?(signature)
       raise ApiException.new( Constant::HTTP_REQUEST_ERROR, "签名错误" )
     end
+  end 
+
+  def verify_params( params, key )
+    unless params.has_key? key
+      raise ApiException.new( Constant::HTTP_REQUEST_ERROR, "未定义属性 #{required_key}" ) 
+    end 
   end
   
 end

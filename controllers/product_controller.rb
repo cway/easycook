@@ -1,7 +1,7 @@
 #encoding:utf-8
 #author cway 2013-06-23
 
-class ProductController < ApplicationController
+class ProductController
 	def self.create( product_info )
 	  verify_params product_info, "attribute_set_id"
       verify_params product_info, "type_id"

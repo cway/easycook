@@ -62,7 +62,7 @@ SecondLevelCache.configure do |config|
   config.logger = logger
   config.cache_key_prefix = 'citylife'
 end
-require ( File.expand_path("../controllers", __FILE__) + '/application_controller.rb' )
+
 # Set autoload directory
 %w{models controllers lib exceptions}.each do |dir|
   Dir.glob(File.expand_path("../#{dir}", __FILE__) + '/**/*.rb').each do |file|
