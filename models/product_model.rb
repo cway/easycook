@@ -17,7 +17,7 @@ class Product < ActiveRecord::Base
     self.transaction do
       product.save
 
-      add_attribures product_info
+      add_attribures product.entity_id, product_info
      
       categories                        = product_info["categories"]
       unless categories.empty?
@@ -35,7 +35,7 @@ class Product < ActiveRecord::Base
   end
 
   #添加商品属性
-  def self.add_attribures( product_info )
+  def self.add_attribures( product_id, product_info )
     attribute_list                                         =  get_attributes(Constant::PRODUCT_TYPE_ID, product_info["attribute_set_id"]) 
     attribute_types_and_value                              =  Hash.new
     attribute_list.each do |attribute|
@@ -49,7 +49,7 @@ class Product < ActiveRecord::Base
         end
         insert_value                                       =  Hash.new
         insert_value['attribute_id']                       =  attribute.attribute_id
-        insert_value['entity_id']                          =  product.entity_id
+        insert_value['entity_id']                          =  product_id
         insert_value['value']                              =  product_info[attribute.attribute_code]
         attribute_types_and_value[attribute.backend_type].push( insert_value )
       end  
