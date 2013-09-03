@@ -3,6 +3,10 @@
 
 class Constant
 
+#SYSTEM_CONFIG
+  PRODUCT_TYPE_ID       =   1   
+
+
 #HTTP_STATUS
   HTTP_REQUEST_SUCCESS  =   200
 
