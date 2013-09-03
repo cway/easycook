@@ -69,10 +69,4 @@ helpers do
     end
   end 
 
-  def verify_params( params, key )
-    unless params.has_key? key
-      raise ApiException.new( Constant::HTTP_REQUEST_ERROR, "未定义属性 #{required_key}" ) 
-    end 
-  end
-  
 end
