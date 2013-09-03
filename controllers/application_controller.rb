@@ -3,6 +3,8 @@
 
 class ApplicationController < Sinatra::Base
 
+  def self.initialize
+  end
   # def self.success( code, data )
   #   ret_data            =   Hash.new
   #   ret_data["status"]  =   1
