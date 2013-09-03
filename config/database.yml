@@ -16,7 +16,7 @@ development:
   database: citylife_test
   pool: 5
   username: citylife_dev
-  password: "citylife@2013#ec"
+  password: "weitv@2013#ec"
   host: 127.0.0.1
 
 # Warning: The database defined as "test" will be erased and
@@ -39,6 +39,6 @@ production:
   database: citylife_test
   pool: 16
   username: citylife_dev
-  password: "citylife@2013#ec"
+  password: "weitv@2013#ec"
   host: 127.0.0.1
   
