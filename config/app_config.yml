@@ -1,0 +1,14 @@
+#ecoding: utf-8
+development: &default
+  session_secret: "123456"
+  wechat_token: "f4b6bac264055aa3feeef018df3efb6d"
+test: 
+  <<: *default
+  session_secret: "123456"
+  wechat_token: "f4b6bac264055aa3feeef018df3efb6d"
+test: 
+production:
+  <<: *default
+  session_secret: "123456"
+  wechat_token: "f4b6bac264055aa3feeef018df3efb6d"
+  
