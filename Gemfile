@@ -14,7 +14,7 @@ gem 'mysql2'
 gem 'hiredis'
 gem 'redis'
 gem 'redis-store'
-gem 'redis-activesupport'
+gem 'redis-activesupport', '~> 3.2'
 # gem 'dalli', :require => 'active_support/cache/dalli_store'
 # gem 'kgio'
 gem "second_level_cache", :git => "git://github.com/csdn-dev/second_level_cache.git"
