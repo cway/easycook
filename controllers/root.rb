@@ -36,7 +36,7 @@ get '/product/:id' do
   end
 end
 
-delete '/product/:id'
+delete '/product/:id' do
   begin
     product_id                 =  params[:id]
     #check_signature( params )
