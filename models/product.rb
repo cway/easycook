@@ -177,10 +177,8 @@ class Product < ActiveRecord::Base
   def self.get_product_attribute_value( attribute )
     modelEntity                 = get_value_model( attribute.backend_type )
     attribute_value             = modelEntity.where( {attribute_id: attribute.attribute_id} ).first
-    unless attribute_value
-      attribute_value           = ""
-    end
-    attribute_value
+    
+    attribute_value ? attribute_value.value : ""
   end
 
   #获取商品类目
@@ -200,17 +198,17 @@ class Product < ActiveRecord::Base
 
   #获取商品可配置属性
   def self.get_product_configurable_attributes( product_id )
-    configurable_attribute      = Array.new
+    configurable_attributes     = Array.new
     configurable_attribute_ids  = ProductConfigurableAttribute.select("attribute_id").where( { product_id: product_id} )
 
     configurable_attribute_ids.each do |configurable_attribute|
       begin
         attribute               = EavAttribute.find( configurable_attribute["attribute_id"] )
-        configurable_attribute << attribute.attribute_code
+        configurable_attributes << attribute.attribute_code
       rescue Exception => e 
       end
     end
-    configurable_attribute
+    configurable_attributes
   end
 
   #获取商品可配置属性

@@ -29,4 +29,12 @@ class ProductController < ApplicationController
 	  end
 	  product
 	end
+
+	def self.get_mutils( product_ids )
+	  products               = Hash.new
+	  product_ids.each do |product_id|
+	  	products[product_id] = self.get( product_id )
+	  end
+	  products
+	end
 end

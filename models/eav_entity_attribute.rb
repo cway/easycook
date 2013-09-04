@@ -6,7 +6,7 @@ class EavEntityAttribute < ActiveRecord::Base
 
   #获取属性集
   def self.get_attributes( conditions )
-  	attributes                       = Hash.new
+  	attributes                       = Array.new
   	attribute_entity_ids             = self.select("attribute_id").where( conditions )          
   	attribute_entity_ids.each do |attribute_entity_info|
   	  begin

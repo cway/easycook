@@ -14,6 +14,28 @@ post '/product' do
   end
 end
 
+put '/product/:id' do
+  begin
+    params                     =  JSON.parse( request.body.string )
+    #check_signature( params )
+    product                    =  ProductController.create( params )
+    success( Constant::HTTP_CREATE_SUCCESS, product )
+  rescue ApiException => error
+    failed( error.code, error.msg )
+  end
+end
+
+get '/products' do
+  begin
+    product_ids                =  params[:ids].split(",")
+    #check_signature( params )
+    product                    =  ProductController.get_mutils( product_ids )
+    success( Constant::HTTP_CREATE_SUCCESS, product )
+  rescue ApiException => error
+    failed( error.code, error.msg )
+  end
+end
+
 get '/product/:id' do
   begin
     product_id                 =  params[:id]
