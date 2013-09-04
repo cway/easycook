@@ -303,6 +303,10 @@ class Product < ActiveRecord::Base
   def self.delete_product( product_id )
     product                     = Product.find( product_id )
     product.update_attribute("is_active", 0);
+    configurable_children       = ProductRelation.select("child_id").where({ parent_id: product_id })
+    configurable_children.each do |configurable_child|
+      self.delete_product( configurable_child.child_id )
+    end
   end
 
   private
