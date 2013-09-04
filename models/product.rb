@@ -12,7 +12,7 @@ class Product < ActiveRecord::Base
     attribute_set_id                     =  product_entity.attribute_set_id
     attributes_list                      =  EavEntityAttribute.get_attributes( { attribute_set_id: attribute_set_id} )
     attributes_list.each do |attribute|
-     product[attribute.attribute_code]   =  get_product_attribute_value( attribute )
+     product[attribute.attribute_code]   =  get_product_attribute_value( product_id, attribute )
     end
     product['id']                        =  product_entity.entity_id
     product['sku']                       =  product_entity.sku 
@@ -174,9 +174,9 @@ class Product < ActiveRecord::Base
   end
 
   #获取商品属性值
-  def self.get_product_attribute_value( attribute )
+  def self.get_product_attribute_value( product_id, attribute )
     modelEntity                 = get_value_model( attribute.backend_type )
-    attribute_value             = modelEntity.where( {attribute_id: attribute.attribute_id} ).first
+    attribute_value             = modelEntity.where( { entity_id: product_id, attribute_id: attribute.attribute_id} ).first
     
     attribute_value ? attribute_value.value : ""
   end
