@@ -301,7 +301,7 @@ class Product < ActiveRecord::Base
 
   #下架商品
   def self.delete_product( product_id )
-    product                     = Product.find(params[:id])
+    product                     = Product.find( product_id )
     product.update_attribute("is_active", 0);
   end
 
