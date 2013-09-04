@@ -253,7 +253,6 @@ class Product < ActiveRecord::Base
     
 
     ret_value                   = attribute_value ? attribute_value.value : attribute.backend_type == "media_gallery" ? "[]" : ""
-    ret_value                   = attribute_value.value 
     if attribute.backend_type == "media_gallery"
       ret_value =  JSON.parse( ret_value )
     end
