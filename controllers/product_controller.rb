@@ -21,13 +21,13 @@ class ProductController < ApplicationController
 
 	#更新商品
 	def self.update( product_id, product_info )
-		verify_params( product_info, "entity_id" )
+		verify_params( product_info, "id" )
 		verify_params( product_info, "sku" )
 		verify_params( product_info, "categories" )
 		verify_params( product_info, "attribute_set_id" )
 		verify_params( product_info, "name" )
 
-	  if product_id != product_info["entity_id"]
+	  if product_id != product_info["id"]
         raise ApiException.new( Constant::HTTP_REQUEST_ERROR, "修改商品信息不匹配" )
 	  end
 	  begin
@@ -37,7 +37,7 @@ class ProductController < ApplicationController
 	  	raise ApiException.new( Constant::HTTP_REQUEST_ERROR, "该商品不存在" ) 
 	  end 
 	end
-	
+
 	#获取单个商品
 	def self.get( product_id )
 	  begin
