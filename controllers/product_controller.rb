@@ -27,7 +27,7 @@ class ProductController < ApplicationController
 		verify_params( product_info, "attribute_set_id" )
 		verify_params( product_info, "name" )
 
-	  if product_id != product_info["id"]
+	  if product_id.to_i != product_info["id"].to_i
         raise ApiException.new( Constant::HTTP_REQUEST_ERROR, "修改商品信息不匹配" )
 	  end
 	  begin
