@@ -8,7 +8,7 @@ class ProductEntityMediaGallery < ActiveRecord::Base
   def self.get_attribute_value( product_id, attribute_id )
     attribute     = self.where({ entity_id: product_id, attribute_id: attribute_id }).first
     ret_value     = "[]"
-    unless attribute
+    if attribute
       ret_value   = attribute.value
     end
     JSON.parse( ret_value )

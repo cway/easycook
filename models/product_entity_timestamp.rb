@@ -8,7 +8,7 @@ class ProductEntityTimestamp < ActiveRecord::Base
   def self.get_attribute_value( product_id, attribute_id )
     attribute     = self.where({ entity_id: product_id, attribute_id: attribute_id }).first
     ret_value     = nil
-    unless attribute
+    if attribute
       ret_value   = attribute.value
     end
     ret_value
