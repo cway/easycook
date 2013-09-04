@@ -299,6 +299,11 @@ class Product < ActiveRecord::Base
     configurable_children
   end
 
+  #下架商品
+  def self.delete_product( product_id )
+    product                     = Product.find(params[:id])
+    product.update_attribute("is_active", 0);
+  end
 
   private
   #获取需更新的属性

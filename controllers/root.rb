@@ -25,22 +25,33 @@ put '/product/:id' do
   end
 end
 
-get '/products' do
+get '/product/:id' do
   begin
-    product_ids                =  params[:ids].split(",")
+    product_id                 =  params[:id]
     #check_signature( params )
-    product                    =  ProductController.get_mutils( product_ids )
+    product                    =  ProductController.get( product_id )
     success( Constant::HTTP_CREATE_SUCCESS, product )
   rescue ApiException => error
     failed( error.code, error.msg )
   end
 end
 
-get '/product/:id' do
+delete '/product/:id'
   begin
     product_id                 =  params[:id]
     #check_signature( params )
-    product                    =  ProductController.get( product_id )
+    product                    =  ProductController.delete( product_id )
+    success( Constant::HTTP_CREATE_SUCCESS, product )
+  rescue ApiException => error
+    failed( error.code, error.msg )
+  end
+end
+
+get '/products' do
+  begin
+    product_ids                =  params[:ids].split(",")
+    #check_signature( params )
+    product                    =  ProductController.get_mutils( product_ids )
     success( Constant::HTTP_CREATE_SUCCESS, product )
   rescue ApiException => error
     failed( error.code, error.msg )

@@ -60,4 +60,9 @@ class ProductController < ApplicationController
 	  products
 	end
 
+	#商品下架
+	def self.delete( product_id )
+	  Product.delete_product( product_id )
+	  self.get( product_id )
+	end
 end
