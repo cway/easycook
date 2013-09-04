@@ -14,5 +14,19 @@ class ProductController < ApplicationController
 	  rescue ActiveRecord::RecordNotUnique => err
 	  	raise ApiException.new( Constant::HTTP_REQUEST_ERROR, "该商品sku已存在" ) 
 	  end
+	  product
+	end
+
+
+	def self.get( product_id )
+	  begin
+	  	product          =  CACHE.read ( 'product_' + product_id )
+	  	unless
+	  	  product        =  Product.get_product product_id
+	    end
+	  rescue ActiveRecord::RecordNotFound => err
+	  	raise ApiException.new( Constant::HTTP_REQUEST_ERROR, "该商品不存在" ) 
+	  end
+	  product
 	end
 end

@@ -14,6 +14,17 @@ post '/product' do
   end
 end
 
+get '/product/:id' do
+  begin
+    product_id                 =  params[:id]
+    #check_signature( params )
+    product                    =  ProductController.get( product_id )
+    success( Constant::HTTP_CREATE_SUCCESS, product )
+  rescue ApiException => error
+    failed( error.code, error.msg )
+  end
+end
+
 get '/*' do
   err = Hash.new
   err["err"] = 403
