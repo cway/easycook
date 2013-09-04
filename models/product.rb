@@ -179,10 +179,10 @@ class Product < ActiveRecord::Base
   end
 
   #插入可配置属性列表
-  def self.add_configurable_attributes(  product_id, configurable_attributes )
+  def self.add_configurable_attributes(  product_id, tmp_configurable_attributes )
     configurable_attributes                   = Array.new
     sort                                      = 0
-    configurable_attributes.each do | configurable_attribute_id |
+    tmp_configurable_attributes.each do | configurable_attribute_id |
       configurable_attribute                  = Hash.new
       configurable_attribute["product_id"]    = product_id
       configurable_attribute["attribute_id"]  = configurable_attribute_id
