@@ -249,14 +249,7 @@ class Product < ActiveRecord::Base
   #获取商品属性值
   def self.get_product_attribute_value( product_id, attribute )
     modelEntity                 = get_value_model( attribute.backend_type )
-    attribute_value             = modelEntity.where( { entity_id: product_id, attribute_id: attribute.attribute_id} ).first
-    
-
-    ret_value                   = attribute_value ? attribute_value.value : attribute.backend_type == "media_gallery" ? "[]" : ""
-    if attribute.backend_type == "media_gallery"
-      ret_value =  JSON.parse( ret_value )
-    end
-    ret_value
+    modelEntity.get_attribute_value( product_id, attribute.attribute_id )#where( { entity_id: product_id, attribute_id: attribute.attribute_id} ).first
   end
 
   #获取商品类目

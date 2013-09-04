@@ -4,4 +4,14 @@
 class ProductEntityText < ActiveRecord::Base
   #attr_accessible :value_id, :entity_type_id, :attribute_id, :entity_id, :value
   self.table_name = "product_entity_text"
+
+  def self.get_attribute_value( product_id, attribute_id )
+    attribute     = self.where({ entity_id: product_id, attribute_id: attribute_id }).first
+    ret_value     = nil
+    unless attribute
+      ret_value   = attribute.value
+    end
+    ret_value
+  end
+  
 end
