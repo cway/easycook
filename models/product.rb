@@ -252,7 +252,11 @@ class Product < ActiveRecord::Base
     attribute_value             = modelEntity.where( { entity_id: product_id, attribute_id: attribute.attribute_id} ).first
     
 
-    attribute_value ? attribute_value.value : attribute.backend_type == "media_gallery" ? [] : ""
+    attribute_value ? attribute_value.value : attribute.backend_type == "media_gallery" ? "[]" : ""
+    
+    if attribute.backend_type == "media_gallery"
+      attribute_value           = JSON.parse attribute_value
+    end
   end
 
   #获取商品类目
