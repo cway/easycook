@@ -9,18 +9,18 @@ class Product < ActiveRecord::Base
   def self.get_product( product_id )
     product                              =  Hash.new
     product_entity                       =  self.find( product_id )
-    attribute_set_id                     =  product.attribute_set_id
+    attribute_set_id                     =  product_entity.attribute_set_id
     attributes_list                      =  EavEntityAttribute.get_attributes( { attribute_set_id: attribute_set_id} )
     attributes_list.each do |attribute|
-     product[attribute.attribute_code]   =  get_product_attribute_value attribute
+     product[attribute.attribute_code]   =  get_product_attribute_value( attribute )
     end
-    product['id']                        =  product.entity_id
-    product['sku']                       =  product.sku 
-    product['categories']                =  get_product_categories( product.entity_id )
-    configurable_attributes              =  get_product_configurable_attributes( product.entity_id )
+    product['id']                        =  product_entity.entity_id
+    product['sku']                       =  product_entity.sku 
+    product['categories']                =  get_product_categories( product['id'] )
+    configurable_attributes              =  get_product_configurable_attributes( product['id'] )
     unless configurable_attributes.empty?
       product['configurable_attributes'] =  configurable_attributes
-      product['configurable_children']   =  get_product_configurable_children( product.entity_id )
+      product['configurable_children']   =  get_product_configurable_children( product['id'] )
     end
     product
   end
