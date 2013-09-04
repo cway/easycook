@@ -104,8 +104,27 @@ class Product < ActiveRecord::Base
         next
       end
 
-      update_attribute product, attribute
+      update_product_attribute( product, attribute )
     end  
+  end
+
+  #更新属性
+  def self.update_product_attribute( product, attribute )
+      
+    modelEntity                 = get_value_model( attribute.backend_type )
+    if modelEntity
+      entity_option             = { entity_type_id: Constant::PRODUCT_TYPE_ID, attribute_id: attribute.attribute_id, entity_id: product.entity_id}
+       
+      #modelEntity.create_with( value: attribute.value ).find_or_create_by( entity_option )
+      entity_value              = modelEntity.where( entity_option ).first
+      if entity_value
+        entity_value.update_attributes( {:value => attribute.value } )
+      else
+        entity_value            = modelEntity.new( entity_option )
+        entity_value.value      = attribute.value
+        entity_value.save
+      end
+    end
   end
 
   #添加商品属性
@@ -276,4 +295,25 @@ class Product < ActiveRecord::Base
     configurable_children
   end
 
+
+  private
+  #获取需更新的属性
+  def self.get_update_attributes( attribute_values )
+    attributes                          = Array.new
+    attribute_values.each do |attribute_code, attribute_value|
+       attribute_info                   = EavAttribute.where( {attribute_code: attribute_code, entity_type_id: Constant::PRODUCT_TYPE_ID} ).first
+       if attribute_info
+         attribute_info                 = attribute_info
+         
+         if attribute_value.class == Array
+            attribute_info.value        = attribute_value.to_json
+         else
+            attribute_info.value        = attribute_value
+         end
+
+         attributes.push( attribute_info )
+       end 
+    end
+    attributes
+  end
 end
