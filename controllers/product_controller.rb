@@ -19,6 +19,7 @@ class ProductController < ApplicationController
 	  product
 	end
 
+	#更新商品
 	def self.update( product_id, product_info )
 		verify_params( product_info, "entity_id" )
 		verify_params( product_info, "sku" )
@@ -36,6 +37,7 @@ class ProductController < ApplicationController
 	  	raise ApiException.new( Constant::HTTP_REQUEST_ERROR, "该商品不存在" ) 
 	  end 
 	end
+	
 	#获取单个商品
 	def self.get( product_id )
 	  begin

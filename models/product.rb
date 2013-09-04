@@ -19,8 +19,8 @@ class Product < ActiveRecord::Base
     product['categories']                =  get_product_categories( product['id'] )
     configurable_attributes              =  get_product_configurable_attributes( product['id'] )
     unless configurable_attributes.empty?
-      product['configurable_attributes'] =  configurable_attributes
-      product['configurable_children']   =  get_product_configurable_children( product['id'] )
+      product['configurable_attributes']     =  configurable_attributes
+      product['configurable_children_ids']   =  get_product_configurable_children( product['id'] )
     end
     product
   end
@@ -46,8 +46,8 @@ class Product < ActiveRecord::Base
 
       if product_info.has_key? "configurable_attributes"
          add_configurable_attributes( product.entity_id, product_info["configurable_attributes"] )
-         if product_info.has_key? "configurable_children"
-           add_relation_products( product.entity_id, product_info["configurable_children"] )
+         if product_info.has_key? "configurable_children_ids"
+           add_relation_products( product.entity_id, product_info["configurable_children_ids"] )
          end
       end
     end
