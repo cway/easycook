@@ -5,9 +5,9 @@ require 'base64'
 
 post '/product' do
   begin
-    params                     =  JSON.parse( request.body.string )
+    product_info               =  JSON.parse( request.body.string )
     #check_signature( params )
-    product                    =  ProductController.create( params )
+    product                    =  ProductController.create( product_info )
     success( Constant::HTTP_CREATE_SUCCESS, product )
   rescue ApiException => error
     failed( error.code, error.msg )
@@ -16,9 +16,9 @@ end
 
 put '/product/:id' do
   begin
-    params                     =  JSON.parse( request.body.string )
+    product_info               =  JSON.parse( request.body.string )
     #check_signature( params )
-    product                    =  ProductController.create( params )
+    product                    =  ProductController.update( params[:id], product_info )
     success( Constant::HTTP_CREATE_SUCCESS, product )
   rescue ApiException => error
     failed( error.code, error.msg )

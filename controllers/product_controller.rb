@@ -2,6 +2,7 @@
 #author cway 2013-06-23
 
 class ProductController < ApplicationController
+	#创建商品
 	def self.create( product_info )
 	  verify_params( product_info, "attribute_set_id" )
       verify_params( product_info, "type_id" )
@@ -10,19 +11,37 @@ class ProductController < ApplicationController
       verify_params( product_info, "name" )
 
 	  begin
-	  	product          =  Product.create_product( product_info )
+	  	product_id        =  Product.create_product( product_info )
+	  	product           =  Product.get_product( product_id )
 	  rescue ActiveRecord::RecordNotUnique => err
 	  	raise ApiException.new( Constant::HTTP_REQUEST_ERROR, "该商品sku已存在" ) 
 	  end
 	  product
 	end
 
+	def self.update( product_id, product_info )
+		verify_params( product_info, "entity_id" )
+		verify_params( product_info, "sku" )
+		verify_params( product_info, "categories" )
+		verify_params( product_info, "attribute_set_id" )
+		verify_params( product_info, "name" )
 
+	  if product_id != product_info["entity_id"]
+        raise ApiException.new( Constant::HTTP_REQUEST_ERROR, "修改商品信息不匹配" )
+	  end
+	  begin
+	  	Product.update_product( product_info )
+	  	product           =  Product.get_product( product_id )
+	  rescue ActiveRecord::RecordNotFound => err
+	  	raise ApiException.new( Constant::HTTP_REQUEST_ERROR, "该商品不存在" ) 
+	  end 
+	end
+	#获取单个商品
 	def self.get( product_id )
 	  begin
-	  	product          =  CACHE.read ( 'product_' + product_id )
-	  	unless
-	  	  product        =  Product.get_product( product_id )
+	  	product           =  CACHE.read ( 'product_' + product_id )
+	  	unless 
+	  	  product         =  Product.get_product( product_id )
 	    end
 	  rescue ActiveRecord::RecordNotFound => err
 	  	raise ApiException.new( Constant::HTTP_REQUEST_ERROR, "该商品不存在" ) 
@@ -30,6 +49,7 @@ class ProductController < ApplicationController
 	  product
 	end
 
+    #获取多个商品
 	def self.get_mutils( product_ids )
 	  products               = Hash.new
 	  product_ids.each do |product_id|
@@ -37,4 +57,5 @@ class ProductController < ApplicationController
 	  end
 	  products
 	end
+
 end

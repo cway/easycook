@@ -51,7 +51,61 @@ class Product < ActiveRecord::Base
          end
       end
     end
-    product
+    product.entity_id
+  end
+
+  def self.update_product( product_info )
+    product                                        = self.find(product_info["entity_id"])
+    attribute_list                                 = get_attributes(Constant::PRODUCT_TYPE_ID, product_info["attribute_set_id"])
+
+
+    attribute_values                               = Hash.new 
+     
+    attribute_list.each do |attribute|
+      if product_info.has_key? attribute.attribute_code and product_info[attribute.attribute_code] != ""
+        attribute_values[attribute.attribute_code] =  product_info[attribute.attribute_code]
+      end 
+    end 
+   
+    self.transaction do
+      update_product_attributes( product, attribute_values )
+      CategoryProduct.where( :product_id => product.entity_id ).delete_all
+      categories                                   = product_info["categories"]
+
+      unless categories.empty?
+        add_categories( product.entity_id, categories )
+      end
+
+      ProductRelation.where( :parent_id => product.entity_id ).delete_all
+      if product_info.has_key? "configurable_children_ids"
+        product_relations                         = Array.new
+        product_info["configurable_children_ids"].each do |configurable_child_id|
+          product_relation_params                 = Hash.new
+          product_relation_params["parent_id"]    = product.entity_id
+          product_relation_params["child_id"]     = configurable_child_id
+          product_relations.push( product_relation_params )
+        end
+        ProductRelation.create( product_relations )
+      end
+
+      product.sku                                 = product_info['sku']
+      product.updated_at                          = Time.now
+      product.save
+    end
+  end
+
+  #更新商品属性
+  def self.update_product_attributes( product, attribute_values )
+    
+    attributes                    = get_update_attributes( attribute_values )  
+ 
+    attributes.each do |attribute|
+      if attribute["value"].class == String and attribute["value"].empty?
+        next
+      end
+
+      update_attribute product, attribute
+    end  
   end
 
   #添加商品属性
