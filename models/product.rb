@@ -55,7 +55,7 @@ class Product < ActiveRecord::Base
   end
 
   def self.update_product( product_info )
-    product                                        = self.find(product_info["entity_id"])
+    product                                        = self.find(product_info["id"])
     attribute_list                                 = get_attributes(Constant::PRODUCT_TYPE_ID, product_info["attribute_set_id"])
 
 
