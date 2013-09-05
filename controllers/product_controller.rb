@@ -41,7 +41,7 @@ class ProductController < ApplicationController
 	#获取单个商品
 	def self.get( product_id )
 	  begin
-	  	product           =  CACHE.read ( 'product_' + product_id )
+	  	product           =  CACHE.read ( 'product_' + product_id.to_s )
 	  	unless product
 	  	  product         =  Product.get_product( product_id )
 	  	  #raise ApiException.new( Constant::HTTP_REQUEST_ERROR, "该商品不存在" )
