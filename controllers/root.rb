@@ -60,9 +60,18 @@ get '/products' do
 end
 
 #闪购相关
-get '/flashsales/:date' do
+get '/flashsales_list/:date' do
   begin
     flashsales                 = FlashsalesController.get_by_date( params[:date] )
+    success( Constant::HTTP_REQUEST_SUCCESS, flashsales )
+  rescue ApiException => error
+    failed( error.code, error.msg )
+  end
+end
+
+get '/flashsales/:id' do
+  begin
+    flashsales                 = FlashsalesController.get( params[:id] )
     success( Constant::HTTP_REQUEST_SUCCESS, flashsales )
   rescue ApiException => error
     failed( error.code, error.msg )

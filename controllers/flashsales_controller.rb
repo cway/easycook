@@ -3,11 +3,23 @@
 
 class FlashsalesController < ApplicationController
 
+  def self.get( flashsales_id )
+  	event                              = Eventrule.find( { rule_id: flashsales_id } )
+  	flashsales                         = Hash.new
+	flashsales['id']                   = event.rule_id
+	flashsales['from_date']            = event.from_date
+    flashsales['end_date']             = event.end_date
+	flashsales['customer_group_ids']   = event.customer_group_ids
+	flashsales['is_active']            = event.is_active
+	flashsales['products']             = EventProduct.get_event_products( flashsales['id'] )
+	flashsales
+  end
+
   def self.get_by_date( date )
-  	datetime                    = Time.parse(date).getlocal().strftime("%Y-%m-%d %H:%M:%S")
-    conditions                  = "from_date <= \"#{datetime}\" and end_date >= \"#{datetime}\" and parent_rule_id = #{Constant::FLASHSALES_PARENT_ID}"
-  	events                      = Eventrule.get_events( conditions )
-  	ret_flashsales              = Array.new
+  	datetime                           = Time.parse(date).getlocal().strftime("%Y-%m-%d %H:%M:%S")
+    conditions                         = "from_date <= \"#{datetime}\" and end_date >= \"#{datetime}\" and parent_rule_id = #{Constant::FLASHSALES_PARENT_ID}"
+  	events                             = Eventrule.get_events( conditions )
+  	ret_flashsales                     = Array.new
   	events.each do |tmp_flashsales|
       flashsales                       = Hash.new
       flashsales['id']                 = tmp_flashsales.rule_id
