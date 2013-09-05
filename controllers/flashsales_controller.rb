@@ -4,7 +4,8 @@
 class FlashsalesController < ApplicationController
 
   def self.get_by_date( date )
-    conditions                  = "from_date <= #{date.to_datetime} and end_date >= #{date.to_datetime} and parent_rule_id = #{Constant::FLASHSALES_PARENT_ID}"
+  	datetime                    = Time.parse(date).getlocal().strftime("%Y-%m-%d %H:%M:%S")
+    conditions                  = "from_date <= \"#{datetime}\" and end_date >= \"#{datetime}\" and parent_rule_id = #{Constant::FLASHSALES_PARENT_ID}"
   	events                      = Eventrule.get_events( conditions )
   	ret_flashsales              = Array.new
   	events.each do |tmp_flashsales|
