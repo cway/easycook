@@ -60,7 +60,7 @@ get '/products' do
 end
 
 #闪购相关
-get '/flashsales/:date'
+get '/flashsales/:date' do
   begin
     flashsales                 = FlashsalesController.get_by_date( params[:date] )
     success( Constant::HTTP_REQUEST_SUCCESS, flashsales )
