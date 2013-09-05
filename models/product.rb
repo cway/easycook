@@ -54,6 +54,7 @@ class Product < ActiveRecord::Base
     product.entity_id
   end
 
+  #更新商品
   def self.update_product( product_info )
     product                                        = self.find(product_info["id"])
     attribute_list                                 = get_attributes(Constant::PRODUCT_TYPE_ID, product_info["attribute_set_id"])
@@ -249,7 +250,11 @@ class Product < ActiveRecord::Base
   #获取商品属性值
   def self.get_product_attribute_value( product_id, attribute )
     modelEntity                 = get_value_model( attribute.backend_type )
-    modelEntity.get_attribute_value( product_id, attribute.attribute_id )#where( { entity_id: product_id, attribute_id: attribute.attribute_id} ).first
+    attribute_value             = nil
+    if( modelEntity )
+      attribute_value           = modelEntity.get_attribute_value( product_id, attribute.attribute_id )#where( { entity_id: product_id, attribute_id: attribute.attribute_id} ).first
+    end
+    attribute_value
   end
 
   #获取商品类目
