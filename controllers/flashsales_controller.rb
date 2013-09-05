@@ -4,7 +4,7 @@
 class FlashsalesController < ApplicationController
 
   def self.get( flashsales_id )
-  	event                              = Eventrule.find( { rule_id: flashsales_id } )
+  	event                              = Eventrule.find( flashsales_id )
   	flashsales                         = Hash.new
 	flashsales['id']                   = event.rule_id
 	flashsales['from_date']            = event.from_date
