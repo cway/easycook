@@ -12,7 +12,7 @@ class ProductController < ApplicationController
 
 	  begin
 	  	product_id        =  Product.create_product( product_info )
-	  	product           =  Product.get_product( product_id )
+	  	product           =  refresh_product_cache( product_id )
 	  rescue ActiveRecord::RecordNotUnique => err
 	  	raise ApiException.new( Constant::HTTP_REQUEST_ERROR, "该商品sku已存在" ) 
 	  end
@@ -32,7 +32,7 @@ class ProductController < ApplicationController
 	  end
 	  begin
 	  	Product.update_product( product_info )
-	  	product           =  Product.get_product( product_id )
+	  	product           =  refresh_product_cache( product_id )
 	  rescue ActiveRecord::RecordNotFound => err
 	  	raise ApiException.new( Constant::HTTP_REQUEST_ERROR, "该商品不存在" ) 
 	  end 
@@ -42,11 +42,23 @@ class ProductController < ApplicationController
 	def self.get( product_id )
 	  begin
 	  	product           =  CACHE.read ( 'product_' + product_id )
-	  	unless 
+	  	unless product
 	  	  product         =  Product.get_product( product_id )
+	  	  #raise ApiException.new( Constant::HTTP_REQUEST_ERROR, "该商品不存在" )
 	    end
 	  rescue ActiveRecord::RecordNotFound => err
 	  	raise ApiException.new( Constant::HTTP_REQUEST_ERROR, "该商品不存在" ) 
+	  end
+	  product
+	end
+
+	def self.refresh_product_cache( product_id )
+	  product           =  nil
+	  begin
+	  	product         =  Product.get_product( product_id )
+	  	CACHE.write( 'product_' + product_id, product )
+	  rescue Exception => e
+	  	raise ApiException.new( Constant::HTTP_REQUEST_ERROR, "该商品不存在" )
 	  end
 	  product
 	end
@@ -63,6 +75,6 @@ class ProductController < ApplicationController
 	#商品下架
 	def self.delete( product_id )
 	  Product.delete_product( product_id )
-	  self.get( product_id )
+	  self.refresh_product_cache( product_id )
 	end
 end
