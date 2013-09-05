@@ -3,6 +3,7 @@
 require 'erb'
 require 'base64'
 
+#商品相关
 post '/product' do
   begin
     product_info               =  JSON.parse( request.body.string )
@@ -19,7 +20,7 @@ put '/product/:id' do
     product_info               =  JSON.parse( request.body.string )
     #check_signature( params )
     product                    =  ProductController.update( params[:id], product_info )
-    success( Constant::HTTP_CREATE_SUCCESS, product )
+    success( Constant::HTTP_REQUEST_SUCCESS, product )
   rescue ApiException => error
     failed( error.code, error.msg )
   end
@@ -30,7 +31,7 @@ get '/product/:id' do
     product_id                 =  params[:id]
     #check_signature( params )
     product                    =  ProductController.get( product_id )
-    success( Constant::HTTP_CREATE_SUCCESS, product )
+    success( Constant::HTTP_REQUEST_SUCCESS, product )
   rescue ApiException => error
     failed( error.code, error.msg )
   end
@@ -41,7 +42,7 @@ delete '/product/:id' do
     product_id                 =  params[:id]
     #check_signature( params )
     product                    =  ProductController.delete( product_id )
-    success( Constant::HTTP_CREATE_SUCCESS, product )
+    success( Constant::HTTP_REQUEST_SUCCESS, product )
   rescue ApiException => error
     failed( error.code, error.msg )
   end
@@ -52,11 +53,22 @@ get '/products' do
     product_ids                =  params[:ids].split(",")
     #check_signature( params )
     product                    =  ProductController.get_mutils( product_ids )
-    success( Constant::HTTP_CREATE_SUCCESS, product )
+    success( Constant::HTTP_REQUEST_SUCCESS, product )
   rescue ApiException => error
     failed( error.code, error.msg )
   end
 end
+
+#闪购相关
+get '/flashsales/:date'
+  begin
+    flashsales                 = FlashsalesController.get_by_date( params[:date] )
+    success( Constant::HTTP_REQUEST_SUCCESS, flashsales )
+  rescue ApiException => error
+    failed( error.code, error.msg )
+  end
+end
+
 
 get '/*' do
   err = Hash.new
